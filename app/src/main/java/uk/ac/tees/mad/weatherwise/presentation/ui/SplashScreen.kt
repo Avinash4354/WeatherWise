@@ -44,7 +44,7 @@ fun SplashScreen(navController: NavController) {
     var isTextVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        // Rotate the sun indefinitely
+
         launch {
             sunRotation.animateTo(
                 targetValue = 360f,
@@ -55,7 +55,7 @@ fun SplashScreen(navController: NavController) {
             )
         }
 
-        // Move the left cloud right and back to center
+
         launch {
             cloudLeftOffset.animateTo(
                 targetValue = 100f,
@@ -67,7 +67,7 @@ fun SplashScreen(navController: NavController) {
             )
         }
 
-        // Move the right cloud left and back to center
+
         launch {
             cloudRightOffset.animateTo(
                 targetValue = -100f,
@@ -93,7 +93,7 @@ fun SplashScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        // Sun with rotation animation
+
         Image(
             painter = painterResource(id = R.drawable.sun),
             contentDescription = "Sun",
@@ -102,7 +102,6 @@ fun SplashScreen(navController: NavController) {
                 .rotate(sunRotation.value)
         )
 
-        // Left Cloud moving right and then back
         Image(
             painter = painterResource(id = R.drawable.cloud1),
             contentDescription = "Cloud Left",
@@ -111,7 +110,7 @@ fun SplashScreen(navController: NavController) {
                 .offset(x = cloudLeftOffset.value.dp, y = (30).dp)
         )
 
-        // Right Cloud moving left and then back
+
         Image(
             painter = painterResource(id = R.drawable.cloud2),
             contentDescription = "Cloud Right",
@@ -120,7 +119,7 @@ fun SplashScreen(navController: NavController) {
                 .offset(x = cloudRightOffset.value.dp, y = (30).dp)
         )
 
-        // Tagline appears with a fade-in effect
+
         AnimatedVisibility(visible = isTextVisible) {
             Text(
                 text = "Stay ahead of the weather, wherever you go!",

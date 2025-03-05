@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import uk.ac.tees.mad.weatherwise.presentation.ui.AuthenticationScreen
 import uk.ac.tees.mad.weatherwise.presentation.ui.MainScreen
 import uk.ac.tees.mad.weatherwise.presentation.ui.SplashScreen
 
@@ -19,6 +20,10 @@ fun MyAppNavigation() {
 
         composable(Screens.MainScreen.route) {
             MainScreen(navController)
+        }
+
+        composable(Screens.AuthenticationScreen.route){
+            AuthenticationScreen(navController)
         }
 
     }

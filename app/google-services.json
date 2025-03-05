@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "411650196796",
+    "project_id": "weatherwise-7454c",
+    "storage_bucket": "weatherwise-7454c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411650196796:android:ea6d7cb80fe0a8f63c8a39",
+        "android_client_info": {
+          "package_name": "uk.ac.tees.mad.weatherwise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbhNg8Q0pcKlt4Kp1F8r0AO536T7SvxPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
