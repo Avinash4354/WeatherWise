@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import uk.ac.tees.mad.weatherwise.R
@@ -42,6 +43,8 @@ fun SplashScreen(navController: NavController) {
     val cloudLeftOffset = remember { Animatable(0f) }
     val cloudRightOffset = remember { Animatable(0f) }
     var isTextVisible by remember { mutableStateOf(false) }
+
+    val auth = FirebaseAuth.getInstance()
 
     LaunchedEffect(Unit) {
 
@@ -82,7 +85,8 @@ fun SplashScreen(navController: NavController) {
         delay(2000)
         isTextVisible = true
         delay(3000)
-        navController.navigate(Screens.MainScreen.route){
+        navController.navigate(if(auth.currentUser!=null) Screens.MainScreen.route
+        else Screens.AuthenticationScreen.route){
             popUpTo(Screens.SplashScreen.route){
                 inclusive = true
             }
