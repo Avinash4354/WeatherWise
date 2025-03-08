@@ -7,6 +7,7 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -61,7 +62,7 @@ fun SplashScreen(navController: NavController) {
 
         launch {
             cloudLeftOffset.animateTo(
-                targetValue = 100f,
+                targetValue = 80f,
                 animationSpec = tween(durationMillis = 3000, easing = LinearEasing)
             )
             cloudLeftOffset.animateTo(
@@ -73,7 +74,7 @@ fun SplashScreen(navController: NavController) {
 
         launch {
             cloudRightOffset.animateTo(
-                targetValue = -100f,
+                targetValue = -80f,
                 animationSpec = tween(durationMillis = 3000, easing = LinearEasing)
             )
             cloudRightOffset.animateTo(
@@ -82,7 +83,7 @@ fun SplashScreen(navController: NavController) {
             )
         }
 
-        delay(2000)
+        delay(800)
         isTextVisible = true
         delay(3000)
         navController.navigate(if(auth.currentUser!=null) Screens.MainScreen.route
@@ -124,16 +125,19 @@ fun SplashScreen(navController: NavController) {
         )
 
 
-        AnimatedVisibility(visible = isTextVisible) {
+        AnimatedVisibility(
+            visible = isTextVisible,
+            enter = fadeIn(animationSpec = tween(durationMillis = 2000))
+        ) {
             Text(
                 text = "Stay ahead of the weather, wherever you go!",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 modifier = Modifier
-                    .align(Alignment.BottomCenter)
                     .padding(top = 150.dp)
             )
         }
+
     }
 }

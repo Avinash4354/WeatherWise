@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import uk.ac.tees.mad.weatherwise.presentation.components.LoadingDialog
 import uk.ac.tees.mad.weatherwise.presentation.navigation.Screens
 import uk.ac.tees.mad.weatherwise.presentation.viewmodel.AuthenticationViewModel
 
@@ -141,6 +142,9 @@ fun AuthenticationScreen(navController: NavController, viewModel: Authentication
                     )
                 }
             }
+        }
+        if (isLoading){
+            LoadingDialog()
         }
     }
 }
