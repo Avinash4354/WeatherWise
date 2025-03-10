@@ -56,6 +56,7 @@ dependencies {
     // dagger hilt
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
+    implementation(libs.play.services.location)
     kapt(libs.hilt.android.compiler)
 
     // navigation

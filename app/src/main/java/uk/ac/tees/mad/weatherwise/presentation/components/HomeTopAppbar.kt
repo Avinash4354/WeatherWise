@@ -24,7 +24,9 @@ import androidx.compose.ui.unit.dp
 import uk.ac.tees.mad.weatherwise.presentation.ui.theme.WeatherWiseTheme
 
 @Composable
-fun HomeTopAppbar(modifier: Modifier = Modifier) {
+fun HomeTopAppbar(
+    onRefresh:()->Unit,
+    modifier: Modifier = Modifier) {
     Row(modifier = modifier
         .padding(top = 40.dp)
         .padding(horizontal = 16.dp)
@@ -53,7 +55,7 @@ fun HomeTopAppbar(modifier: Modifier = Modifier) {
             Text("Last updated: 1h",
                 color = Color.White,
                 modifier=Modifier.padding(start = 12.dp))
-            IconButton(onClick = {}) {
+            IconButton(onClick = {onRefresh()}) {
                 Icon(Icons.Default.Refresh,
                     contentDescription = "refresh",
                     tint = Color.White
