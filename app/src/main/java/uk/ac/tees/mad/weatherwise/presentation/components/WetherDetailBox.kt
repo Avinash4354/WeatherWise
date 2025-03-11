@@ -18,9 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import uk.ac.tees.mad.weatherwise.domain.model.WeatherData
 
 @Composable
-fun WeatherDetailBox(modifier: Modifier = Modifier) {
+fun WeatherDetailBox(weatherData: WeatherData,modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         Column(
             modifier = Modifier
@@ -35,19 +36,19 @@ fun WeatherDetailBox(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                DetailDoubleText()
+                DetailDoubleText(weatherData.feelsLike.toString(),"Feels Like")
                 VerticalDivider(
                     thickness = 4.dp, color = Color(0xB7FFFFFF),
                     modifier = Modifier
                         .size(16.dp)
                 )
-                DetailDoubleText()
+                DetailDoubleText(weatherData.humidity.toString(),"Humidity")
                 VerticalDivider(
                     thickness = 4.dp, color = Color(0xB7FFFFFF),
                     modifier = Modifier
                         .size(16.dp)
                 )
-                DetailDoubleText()
+                DetailDoubleText(weatherData.visibility.toString(),"Visibility")
             }
             Spacer(Modifier.height(12.dp))
             Row(
@@ -55,19 +56,19 @@ fun WeatherDetailBox(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                DetailDoubleText()
+                DetailDoubleText(weatherData.windSpeed.toString(),"Wind Speed")
                 VerticalDivider(
                     thickness = 4.dp, color = Color(0xB7FFFFFF),
                     modifier = Modifier
                         .size(16.dp)
                 )
-                DetailDoubleText()
+                DetailDoubleText(weatherData.tempMin.toString(),"Min Temp")
                 VerticalDivider(
                     thickness = 4.dp, color = Color(0xB7FFFFFF),
                     modifier = Modifier
                         .size(16.dp)
                 )
-                DetailDoubleText()
+                DetailDoubleText(weatherData.tempMax.toString(),"Max Temp")
             }
         }
     }
