@@ -18,10 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import uk.ac.tees.mad.weatherwise.domain.model.WeatherData
+import uk.ac.tees.mad.weatherwise.data.local.WeatherEntity
 
 @Composable
-fun WeatherDetailBox(weatherData: WeatherData,modifier: Modifier = Modifier) {
+fun WeatherDetailBox(weatherData: WeatherEntity,modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         Column(
             modifier = Modifier
@@ -62,13 +62,13 @@ fun WeatherDetailBox(weatherData: WeatherData,modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .size(16.dp)
                 )
-                DetailDoubleText(weatherData.tempMin.toString(),"Min Temp")
+                DetailDoubleText(weatherData.minTemp.toString(),"Min Temp")
                 VerticalDivider(
                     thickness = 4.dp, color = Color(0xB7FFFFFF),
                     modifier = Modifier
                         .size(16.dp)
                 )
-                DetailDoubleText(weatherData.tempMax.toString(),"Max Temp")
+                DetailDoubleText(weatherData.maxTemp.toString(),"Max Temp")
             }
         }
     }

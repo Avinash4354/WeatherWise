@@ -24,7 +24,7 @@ import uk.ac.tees.mad.weatherwise.presentation.viewmodel.HomeViewModel
 fun HomeScreen(homeViewModel: HomeViewModel,
     modifier: Modifier = Modifier) {
     val userLocation by homeViewModel.userLocation.collectAsState()
-    val weatherState by homeViewModel.weatherState.collectAsState()
+    val currentWeatherEntity by homeViewModel.currentLocationData.collectAsState(null)
 
 //    val permissionLauncher = rememberLauncherForActivityResult(
 //        contract = ActivityResultContracts.RequestPermission()
@@ -44,9 +44,11 @@ fun HomeScreen(homeViewModel: HomeViewModel,
         ){
         HomeBackGround()
         HomeTopAppbar(
+            city = currentWeatherEntity?.city,
+            country = currentWeatherEntity?.country,
             onRefresh = {homeViewModel.fetchWeather(homeViewModel.lat, homeViewModel.lon)},
             modifier = Modifier.align(Alignment.TopCenter))
-        Text(text = "${weatherState?.temperature}°",
+        Text(text = "${currentWeatherEntity?.temperature}°",
             fontSize = 80.sp,
             fontFamily = FontFamily.SansSerif,
             color = Color.White,
@@ -54,7 +56,7 @@ fun HomeScreen(homeViewModel: HomeViewModel,
                 .padding(start = 16.dp, top = 110.dp)
         )
 
-        weatherState?.let {
+        currentWeatherEntity?.let {
             Text(text = it.description,
                 style = MaterialTheme.typography.headlineLarge,
                 color = Color.White,
@@ -65,7 +67,7 @@ fun HomeScreen(homeViewModel: HomeViewModel,
             )
         }
 
-        weatherState?.let {
+        currentWeatherEntity?.let {
             WeatherDetailBox(
                 it,
                 modifier =Modifier.align(Alignment.BottomCenter)

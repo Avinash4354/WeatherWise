@@ -19,12 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import uk.ac.tees.mad.weatherwise.presentation.ui.theme.WeatherWiseTheme
 
 @Composable
 fun HomeTopAppbar(
+    city:String?,
+    country:String?,
     onRefresh:()->Unit,
     modifier: Modifier = Modifier) {
     Row(modifier = modifier
@@ -34,16 +34,20 @@ fun HomeTopAppbar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
-            Text("New York",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.ExtraBold,
-                color = Color.White
-            )
-            Text("USA",
-                style = MaterialTheme.typography.titleMedium,
-                color = Color.White
+            if (city != null) {
+                Text(city,
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.White
+                )
+            }
+            if (country != null) {
+                Text(country,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.White
 
-            )
+                )
+            }
         }
         Spacer(Modifier.weight(1f))
         Row(
