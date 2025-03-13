@@ -46,7 +46,8 @@ fun HomeScreen(homeViewModel: HomeViewModel,
         HomeTopAppbar(
             city = currentWeatherEntity?.city,
             country = currentWeatherEntity?.country,
-            onRefresh = {homeViewModel.fetchWeather(homeViewModel.lat, homeViewModel.lon)},
+            time = currentWeatherEntity?.timeStamp,
+            onRefresh = {homeViewModel.fetchWeather(25.5941,85.1376 )},
             modifier = Modifier.align(Alignment.TopCenter))
         Text(text = "${currentWeatherEntity?.temperature}°",
             fontSize = 80.sp,

@@ -13,6 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import uk.ac.tees.mad.weatherwise.data.local.WeatherDataDao
 import uk.ac.tees.mad.weatherwise.data.local.WeatherDatabase
+import uk.ac.tees.mad.weatherwise.data.remote.GeocodingApiService
 import uk.ac.tees.mad.weatherwise.data.remote.WeatherApiService
 import uk.ac.tees.mad.weatherwise.data.repository.WeatherRepositoryImpl
 import uk.ac.tees.mad.weatherwise.domain.repository.WeatherRepository
@@ -35,16 +36,28 @@ object AppModule {
         return database.weatherDataDao()
     }
 
-
     @Provides
     @Singleton
-    fun provideWeatherApiService(): WeatherApiService {
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(WeatherApiService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideWeatherApiService(retrofit: Retrofit): WeatherApiService {
+        return retrofit.create(WeatherApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGeocodingApiService(retrofit: Retrofit): GeocodingApiService {
+        return retrofit.create(GeocodingApiService::class.java)
+    }
+
+
 
     @Provides
     @Singleton

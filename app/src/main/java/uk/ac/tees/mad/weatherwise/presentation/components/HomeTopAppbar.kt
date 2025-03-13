@@ -20,11 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import uk.ac.tees.mad.weatherwise.utils.Utils
 
 @Composable
 fun HomeTopAppbar(
     city:String?,
     country:String?,
+    time:Long?,
     onRefresh:()->Unit,
     modifier: Modifier = Modifier) {
     Row(modifier = modifier
@@ -56,7 +58,7 @@ fun HomeTopAppbar(
                 .background(Color(0x27FFFFFF), shape = RoundedCornerShape(12.dp))
                 .border(2.dp, Color.White, RoundedCornerShape(12.dp))
         ) {
-            Text("Last updated: 1h",
+            Text("Last updated: ${time?.let { Utils.getTimeAgo(it) }}",
                 color = Color.White,
                 modifier=Modifier.padding(start = 12.dp))
             IconButton(onClick = {onRefresh()}) {

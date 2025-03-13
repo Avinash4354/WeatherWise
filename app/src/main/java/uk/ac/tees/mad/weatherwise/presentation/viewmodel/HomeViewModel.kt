@@ -32,84 +32,84 @@ class HomeViewModel @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient,
     private val auth: FirebaseAuth,
     @ApplicationContext private val context: Context
-):ViewModel() {
+) : ViewModel() {
 
     private val _userLocation = MutableStateFlow<Location?>(null)
     val userLocation: StateFlow<Location?> get() = _userLocation
 
     private val _currentLocationData = MutableStateFlow<WeatherEntity?>(null)
-    val currentLocationData:Flow<WeatherEntity?> get() = _currentLocationData
+    val currentLocationData: Flow<WeatherEntity?> get() = _currentLocationData
 
-    private val currentUser = auth.currentUser?.uid?:""
+    private val currentUser = auth.currentUser?.uid ?: ""
 
     init {
         viewModelScope.launch {
-            repository.getCurrentLocation(currentUser).collect{
-                _currentLocationData.value = it
+            repository.getCurrentLocation(currentUser).collect {
+                if (it == null) {
+                    _weatherState.value = getWeatherUseCase(40.7128, 74.0060, Constants.WEATHER_API)
+                    if (_weatherState.value != null) {
+                        repository.addWeatherData(
+                            WeatherEntity(
+                                userId = currentUser,
+                                latitude = 40.7128,
+                                longitude = 74.0060,
+                                mainWeather = _weatherState.value!!.mainWeather,
+                                description = _weatherState.value!!.description,
+                                temperature = _weatherState.value!!.temperature,
+                                feelsLike = _weatherState.value!!.feelsLike,
+                                minTemp = _weatherState.value!!.tempMin,
+                                maxTemp = _weatherState.value!!.tempMax,
+                                humidity = _weatherState.value!!.humidity,
+                                visibility = _weatherState.value!!.visibility,
+                                windSpeed = _weatherState.value!!.windSpeed,
+                                sunrise = _weatherState.value!!.sunrise,
+                                sunset = _weatherState.value!!.sunset,
+                                dataType = "current_location",
+                                city = "New York".uppercase(Locale.ROOT),
+                                country = "United States"
+                            )
+                        )
+                    }
+                }
+                else{
+                    _currentLocationData.value = it
+                }
             }
         }
     }
 
-    val lat = 25.5941
-    val lon = 85.1376
-
     private val _weatherState = MutableStateFlow<WeatherData?>(null)
-    val weatherState:StateFlow<WeatherData?> get() = _weatherState
+    val weatherState: StateFlow<WeatherData?> get() = _weatherState
 
 
     fun fetchWeather(lat: Double, lon: Double) {
         viewModelScope.launch {
             _weatherState.value = getWeatherUseCase(lat, lon, Constants.WEATHER_API)
             if (_weatherState.value != null) {
-                if (_currentLocationData.value==null) {
-                    repository.addWeatherData(
-                        WeatherEntity(
-                            userId = currentUser,
-                            latitude = lat,
-                            longitude = lon,
-                            mainWeather = _weatherState.value!!.mainWeather,
-                            description = _weatherState.value!!.description,
-                            temperature = _weatherState.value!!.temperature,
-                            feelsLike = _weatherState.value!!.feelsLike,
-                            minTemp = _weatherState.value!!.tempMin,
-                            maxTemp = _weatherState.value!!.tempMax,
-                            humidity = _weatherState.value!!.humidity,
-                            visibility = _weatherState.value!!.visibility,
-                            windSpeed = _weatherState.value!!.windSpeed,
-                            sunrise = _weatherState.value!!.sunrise,
-                            sunset = _weatherState.value!!.sunset,
-                            dataType = "current_location",
-                            city = "New York".uppercase(Locale.ROOT),
-                            country = "United States"
-                        )
+                repository.updateCurrentLocation(
+                    _currentLocationData.value!!.copy(
+                        latitude = lat,
+                        longitude = lon,
+                        mainWeather = _weatherState.value!!.mainWeather,
+                        description = _weatherState.value!!.description,
+                        temperature = _weatherState.value!!.temperature,
+                        feelsLike = _weatherState.value!!.feelsLike,
+                        minTemp = _weatherState.value!!.tempMin,
+                        maxTemp = _weatherState.value!!.tempMax,
+                        humidity = _weatherState.value!!.humidity,
+                        visibility = _weatherState.value!!.visibility,
+                        windSpeed = _weatherState.value!!.windSpeed,
+                        sunrise = _weatherState.value!!.sunrise,
+                        sunset = _weatherState.value!!.sunset,
+                        timeStamp = System.currentTimeMillis(),
+                        dataType = "current_location",
+                        city = "Patna".uppercase(Locale.ROOT),
+                        country = "India"
                     )
-                }
-                else{
-                    repository.updateCurrentLocation(
-                        _currentLocationData.value!!.copy(
-                            latitude = lat,
-                            longitude = lon,
-                            mainWeather = _weatherState.value!!.mainWeather,
-                            description = _weatherState.value!!.description,
-                            temperature = _weatherState.value!!.temperature,
-                            feelsLike = _weatherState.value!!.feelsLike,
-                            minTemp = _weatherState.value!!.tempMin,
-                            maxTemp = _weatherState.value!!.tempMax,
-                            humidity = _weatherState.value!!.humidity,
-                            visibility = _weatherState.value!!.visibility,
-                            windSpeed = _weatherState.value!!.windSpeed,
-                            sunrise = _weatherState.value!!.sunrise,
-                            sunset = _weatherState.value!!.sunset,
-                            dataType = "current_location",
-                            city = "Patna".uppercase(Locale.ROOT),
-                            country = "India"
-                    ))
-                }
+                )
             }
         }
     }
-
-
 
 
     fun fetchLocation() {
