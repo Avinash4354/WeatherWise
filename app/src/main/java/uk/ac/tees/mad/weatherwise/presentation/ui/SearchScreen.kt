@@ -4,18 +4,23 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import uk.ac.tees.mad.weatherwise.presentation.components.LocationSearchCard
 import uk.ac.tees.mad.weatherwise.presentation.components.SearchTopAppBar
+import uk.ac.tees.mad.weatherwise.presentation.viewmodel.SearchScreenViewModel
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier) {
-    var query by remember { mutableStateOf("") }
+fun SearchScreen(
+    viewModel: SearchScreenViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier) {
+    val query by viewModel.query.collectAsState()
+    val locations by viewModel.locations.collectAsState()
     Box(modifier=modifier
         .fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -23,12 +28,18 @@ fun SearchScreen(modifier: Modifier = Modifier) {
         Column(modifier = Modifier.fillMaxSize()) {
             SearchTopAppBar(
                 query = query,
-                onQueryChange = {query  = it},
-                onSearch = {}
+                onQueryChange = {viewModel.onChangeQuery(it)},
+                onSearch = {viewModel.searchLocations()}
             )
-        }
-        LazyColumn {
-
+            LazyColumn {
+                items(locations){location->
+                    LocationSearchCard(
+                        cityName = location.name,
+                        countryName = location.country,
+                        {}
+                    )
+                }
+            }
         }
     }
 }
