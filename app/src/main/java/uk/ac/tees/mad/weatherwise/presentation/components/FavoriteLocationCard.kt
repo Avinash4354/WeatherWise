@@ -61,7 +61,9 @@ fun FavoriteLocationCard(
 
                             onDelete()
                         }
-                        offsetX = 0f
+                        else{
+                            offsetX = 0f
+                        }
                     }
                 ) { change, dragAmount ->
                     offsetX += dragAmount

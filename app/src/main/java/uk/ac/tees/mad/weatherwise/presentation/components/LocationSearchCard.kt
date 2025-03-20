@@ -1,5 +1,6 @@
 package uk.ac.tees.mad.weatherwise.presentation.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,13 +28,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun LocationSearchCard(
     cityName: String,
     countryName: String,
     onFavoriteClick: (Boolean) -> Unit
 ) {
-    var isFavorite by rememberSaveable { mutableStateOf(false) }
+    var isFavorite by mutableStateOf(false)
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -53,7 +55,6 @@ fun LocationSearchCard(
                     text = cityName,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
                 )
                 Text(
                     text = countryName,
@@ -63,8 +64,9 @@ fun LocationSearchCard(
             }
 
             IconButton(onClick = {
+                onFavoriteClick(isFavorite)
                 isFavorite = true
-                onFavoriteClick(isFavorite) }) {
+            }) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                     contentDescription = "Favorite",
