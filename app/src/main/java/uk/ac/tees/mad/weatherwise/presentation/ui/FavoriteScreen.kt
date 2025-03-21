@@ -7,8 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,16 +15,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import uk.ac.tees.mad.weatherwise.R
 import uk.ac.tees.mad.weatherwise.presentation.components.FavoriteLocationCard
+import uk.ac.tees.mad.weatherwise.presentation.components.SwipeToDelete
+import uk.ac.tees.mad.weatherwise.presentation.navigation.Screens
 import uk.ac.tees.mad.weatherwise.presentation.viewmodel.FavoriteViewModel
 
 @Composable
 fun FavoriteScreen(modifier: Modifier = Modifier,
-    viewModel: FavoriteViewModel = hiltViewModel()
-) {
+    viewModel: FavoriteViewModel = hiltViewModel(),
+   navController: NavController
+){
     val context = LocalContext.current
     val favoritePlaces by viewModel.favoriteLocationData.collectAsState()
     Box(modifier=modifier
@@ -38,16 +44,21 @@ fun FavoriteScreen(modifier: Modifier = Modifier,
                 modifier = Modifier.padding(16.dp)
             )
             LazyColumn {
-                items(favoritePlaces){place->
-                    FavoriteLocationCard(
-                        place.city,
-                        place.country,
-                        place.mainWeather,
-                        place.temperature.toString(),
-                        Icons.Default.Star
-                    ) {
-                        viewModel.deleteFavorite(place)
-                        Toast.makeText(context,"Deleted", Toast.LENGTH_SHORT).show()
+                itemsIndexed(favoritePlaces){index,place->
+                    SwipeToDelete(item = place,
+                        onDelete = {viewModel.deleteFavorite(place)
+                            Toast.makeText(context,"Deletion successful", Toast.LENGTH_SHORT).show()
+                        }) {
+                        FavoriteLocationCard(
+                            city = place.city,
+                            countryCode = place.country,
+                            weather = place.mainWeather,
+                            temperature = place.temperature.toString(),
+                            ImageVector.vectorResource(R.drawable.baseline_cloudy_snowing_24),
+                            onClick = {
+                                navController.navigate(Screens.DetailedScreen.route+"/"+index)
+                            }
+                        )
                     }
                 }
             }

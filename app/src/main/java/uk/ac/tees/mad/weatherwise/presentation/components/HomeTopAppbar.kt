@@ -26,8 +26,6 @@ import uk.ac.tees.mad.weatherwise.utils.Utils
 fun HomeTopAppbar(
     city:String?,
     country:String?,
-    time:Long?,
-    onRefresh:()->Unit,
     modifier: Modifier = Modifier) {
     Row(modifier = modifier
         .padding(top = 40.dp)
@@ -49,23 +47,6 @@ fun HomeTopAppbar(
                     color = Color.White
 
                 )
-            }
-        }
-        Spacer(Modifier.weight(1f))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .background(Color(0x27FFFFFF), shape = RoundedCornerShape(12.dp))
-                .border(2.dp, Color.White, RoundedCornerShape(12.dp))
-        ) {
-            Text("Last updated: ${time?.let { Utils.getTimeAgo(it) }}",
-                color = Color.White,
-                modifier=Modifier.padding(start = 12.dp))
-            IconButton(onClick = {onRefresh()}) {
-                Icon(Icons.Default.Refresh,
-                    contentDescription = "refresh",
-                    tint = Color.White
-                    )
             }
         }
     }

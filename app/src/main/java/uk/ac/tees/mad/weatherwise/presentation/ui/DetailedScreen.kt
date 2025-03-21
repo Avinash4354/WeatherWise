@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,30 +25,24 @@ import uk.ac.tees.mad.weatherwise.presentation.components.HomeBackGround
 import uk.ac.tees.mad.weatherwise.presentation.components.HomeTopAppbar
 import uk.ac.tees.mad.weatherwise.presentation.components.IconText
 import uk.ac.tees.mad.weatherwise.presentation.components.WeatherDetailBox
-import uk.ac.tees.mad.weatherwise.presentation.viewmodel.HomeViewModel
+import uk.ac.tees.mad.weatherwise.presentation.viewmodel.FavoriteViewModel
 import uk.ac.tees.mad.weatherwise.utils.Utils
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel,
-    modifier: Modifier = Modifier) {
-    val userLocation by homeViewModel.userLocation.collectAsState()
-    val currentWeatherEntity by homeViewModel.currentLocationData.collectAsState(null)
+fun DetailedScreen(
+    index: Int,
+    viewModel: FavoriteViewModel,
+    modifier: Modifier = Modifier
+) {
+    val currentWeatherEntity by viewModel.currentEntity.collectAsState()
 
-//    val permissionLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.RequestPermission()
-//    ) { isGranted ->
-//        if (isGranted) {
-//            homeViewModel.fetchLocation()
-//        }
-//    }
-//
-//    LaunchedEffect(Unit) {
-//        permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//    }
-
+    LaunchedEffect(Unit) {
+        viewModel.updateIndex(index)
+    }
     Box(
         modifier = modifier
             .fillMaxSize(),
+
         ) {
         HomeBackGround()
         Column(modifier = Modifier.fillMaxSize()) {
@@ -79,19 +74,19 @@ fun HomeScreen(homeViewModel: HomeViewModel,
                     )
                 }
                 RefreshBox(it.timeStamp) {
-                    homeViewModel.fetchWeather(25.5941,85.1376)
+                    viewModel.updateWeather()
                 }
                 Spacer(Modifier.weight(1f))
                 Row(verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.padding(horizontal = 16.dp)
                         .fillMaxWidth()
-                ) {
+                    ) {
                     IconText(Utils.formatTimestampToTime(it.sunrise))
                     IconText(Utils.formatTimestampToTime(it.sunset))
                 }
                 WeatherDetailBox(it)
-                Spacer(Modifier.height(60.dp))
+                Spacer(Modifier.height(40.dp))
             }
         }
     }

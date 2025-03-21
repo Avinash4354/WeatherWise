@@ -1,6 +1,10 @@
 package uk.ac.tees.mad.weatherwise.utils
 
 import uk.ac.tees.mad.weatherwise.model.Raindrop
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 import kotlin.random.Random
 
 object Utils {
@@ -31,6 +35,13 @@ object Utils {
             diff < 31_557_600_000 -> "${diff / 2_629_746_000} mo"
             else -> "${diff / 31_557_600_000} y"
         }
+    }
+
+    fun formatTimestampToTime(timestamp: Long): String {
+        val date = Date(timestamp * 1000)
+        val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        sdf.timeZone = TimeZone.getDefault()
+        return sdf.format(date)
     }
 
 }
