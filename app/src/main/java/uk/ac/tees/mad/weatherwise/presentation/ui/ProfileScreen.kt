@@ -1,40 +1,60 @@
 package uk.ac.tees.mad.weatherwise.presentation.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
+import uk.ac.tees.mad.weatherwise.R
+import uk.ac.tees.mad.weatherwise.presentation.components.EditProfileBottomSheet
+import uk.ac.tees.mad.weatherwise.presentation.components.ProfileSection
+import uk.ac.tees.mad.weatherwise.presentation.components.SettingButton
 import uk.ac.tees.mad.weatherwise.presentation.navigation.Screens
+import uk.ac.tees.mad.weatherwise.presentation.viewmodel.ProfileViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController,modifier: Modifier = Modifier) {
-    val auth = FirebaseAuth.getInstance()
-    Box(modifier=modifier
-        .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-        Column {
-            Text("Profile Screen")
-            Spacer(Modifier.height(20.dp))
-            Button(onClick = {
-                auth.signOut()
-                navController.navigate(Screens.AuthenticationScreen.route){
-                    popUpTo(Screens.MainScreen.route){
-                        inclusive = true
-                    }
+fun ProfileScreen(navController: NavController,
+                  viewModel: ProfileViewModel = hiltViewModel(),
+                  modifier: Modifier = Modifier) {
+    val name by viewModel.name.collectAsState()
+    var showEditProfile by remember { mutableStateOf(false) }
+    Column(modifier = modifier.fillMaxSize()) {
+        ProfileSection(name) {showEditProfile = true }
+        SettingButton(
+            title = "Current Location",
+            icon = Icons.Default.LocationOn
+        ) { }
+        SettingButton(
+            title = "Log Out",
+            icon = Icons.AutoMirrored.Filled.ExitToApp
+        ) {
+            viewModel.logOut()
+            navController.navigate(Screens.AuthenticationScreen.route){
+                popUpTo(Screens.MainScreen.route){
+                    inclusive = true
                 }
-            }) {
-                Text("Logout")
             }
+        }
+    }
+    if (showEditProfile){
+        EditProfileBottomSheet(
+            name,
+            R.drawable.placeholder_profile,
+            onSave = {
+                viewModel.updateProfile(it)
+                showEditProfile = false
+            }
+        ) {
+            showEditProfile = false
         }
     }
 }

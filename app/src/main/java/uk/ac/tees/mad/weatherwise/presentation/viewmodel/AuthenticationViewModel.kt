@@ -2,6 +2,7 @@ package uk.ac.tees.mad.weatherwise.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -55,8 +56,17 @@ class AuthenticationViewModel @Inject constructor(
             .addOnCompleteListener { task ->
                 _isLoading.value = false
                 if (task.isSuccessful) {
-                    _loginSuccess.value = true
-                    // add toast
+                    val profileUpdate = UserProfileChangeRequest.Builder()
+                        .setDisplayName(_name.value)
+                        .build()
+                    auth.currentUser?.updateProfile(profileUpdate)?.addOnSuccessListener{
+                        _loginSuccess.value = true
+                        // add toast
+                    }
+                        ?.addOnFailureListener{
+                            // add toast
+                        }
+
                 } else {
                     // add toast
                 }

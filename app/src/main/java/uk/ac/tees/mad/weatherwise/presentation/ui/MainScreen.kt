@@ -27,7 +27,7 @@ fun MainScreen(navController: NavController) {
             0-> HomeScreen(homeViewModel)
             1-> SearchScreen(modifier = Modifier.padding(paddingValues))
             2-> FavoriteScreen(modifier = Modifier.padding(paddingValues), navController = navController)
-            3-> ProfileScreen(navController, modifier = Modifier.padding(paddingValues))
+            3-> ProfileScreen(navController,modifier = Modifier.padding(paddingValues))
         }
 
     }
