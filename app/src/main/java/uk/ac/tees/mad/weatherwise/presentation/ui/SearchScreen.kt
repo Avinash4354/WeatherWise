@@ -39,12 +39,14 @@ fun SearchScreen(
                     LocationSearchCard(
                         cityName = location.name,
                         countryName = location.country,
+                        showHeart = true,
                         onFavoriteClick = {
                             if (!it) {
-                                viewModel.saveToFavorite(location)
+                                viewModel.saveToFavorite("favorite_location",location)
                                 Toast.makeText(context,"Saved to favorite", Toast.LENGTH_SHORT).show()
                             }
-                        }
+                        },
+                        onClick = {}
                     )
                 }
             }

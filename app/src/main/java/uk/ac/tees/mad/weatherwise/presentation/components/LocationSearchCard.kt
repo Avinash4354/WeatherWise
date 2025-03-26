@@ -2,6 +2,7 @@ package uk.ac.tees.mad.weatherwise.presentation.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,7 +33,9 @@ import androidx.compose.ui.unit.sp
 fun LocationSearchCard(
     cityName: String,
     countryName: String,
-    onFavoriteClick: (Boolean) -> Unit
+    showHeart:Boolean,
+    onFavoriteClick: (Boolean) -> Unit,
+    onClick:()->Unit
 ) {
     var isFavorite by mutableStateOf(false)
     Card(
@@ -41,6 +44,9 @@ fun LocationSearchCard(
             .padding(8.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(Color.White)
+            .clickable {
+                onClick()
+            }
     ) {
         Row(
             modifier = Modifier
@@ -62,15 +68,17 @@ fun LocationSearchCard(
                 )
             }
 
-            IconButton(onClick = {
-                onFavoriteClick(isFavorite)
-                isFavorite = true
-            }) {
-                Icon(
-                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                    contentDescription = "Favorite",
-                    tint = if (isFavorite) Color.Red else Color.Gray
-                )
+            if (showHeart) {
+                IconButton(onClick = {
+                    onFavoriteClick(isFavorite)
+                    isFavorite = true
+                }) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Favorite",
+                        tint = if (isFavorite) Color.Red else Color.Gray
+                    )
+                }
             }
         }
     }

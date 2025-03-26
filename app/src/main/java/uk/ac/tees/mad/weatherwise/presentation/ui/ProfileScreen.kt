@@ -32,7 +32,9 @@ fun ProfileScreen(navController: NavController,
         SettingButton(
             title = "Current Location",
             icon = Icons.Default.LocationOn
-        ) { }
+        ) {
+            navController.navigate(Screens.CurrentLocationScreen.route)
+        }
         SettingButton(
             title = "Log Out",
             icon = Icons.AutoMirrored.Filled.ExitToApp

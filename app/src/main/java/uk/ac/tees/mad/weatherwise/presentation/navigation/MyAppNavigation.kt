@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import uk.ac.tees.mad.weatherwise.presentation.ui.AuthenticationScreen
+import uk.ac.tees.mad.weatherwise.presentation.ui.CurrentLocationScreen
 import uk.ac.tees.mad.weatherwise.presentation.ui.DetailedScreen
 import uk.ac.tees.mad.weatherwise.presentation.ui.MainScreen
 import uk.ac.tees.mad.weatherwise.presentation.ui.SplashScreen
@@ -39,6 +40,10 @@ fun MyAppNavigation() {
             val placeIndex = backStackEntry.arguments?.getInt("place_index") ?: 0
             val viewModel:FavoriteViewModel = hiltViewModel()
             DetailedScreen(placeIndex,viewModel)
+        }
+
+        composable(Screens.CurrentLocationScreen.route){
+            CurrentLocationScreen()
         }
 
     }

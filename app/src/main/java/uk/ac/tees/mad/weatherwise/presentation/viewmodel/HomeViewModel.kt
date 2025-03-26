@@ -4,8 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.toUpperCase
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -84,7 +82,8 @@ class HomeViewModel @Inject constructor(
 
     fun fetchWeather(lat: Double, lon: Double) {
         viewModelScope.launch {
-            _weatherState.value = getWeatherUseCase(lat, lon, Constants.WEATHER_API)
+            _weatherState.value = getWeatherUseCase(_currentLocationData.value!!.latitude,
+                _currentLocationData.value!!.longitude, Constants.WEATHER_API)
             if (_weatherState.value != null) {
                 repository.updateCurrentLocation(
                     _currentLocationData.value!!.copy(
@@ -103,8 +102,8 @@ class HomeViewModel @Inject constructor(
                         sunset = _weatherState.value!!.sunset,
                         timeStamp = System.currentTimeMillis(),
                         dataType = "current_location",
-                        city = "Patna".uppercase(Locale.ROOT),
-                        country = "India"
+                        city = _currentLocationData.value!!.city,
+                        country = _currentLocationData.value!!.country
                     )
                 )
             }
