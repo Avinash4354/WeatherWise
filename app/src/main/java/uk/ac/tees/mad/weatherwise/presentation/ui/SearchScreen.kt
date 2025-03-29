@@ -42,7 +42,7 @@ fun SearchScreen(
                         showHeart = true,
                         onFavoriteClick = {
                             if (!it) {
-                                viewModel.saveToFavorite("favorite_location",location)
+                                viewModel.saveToFavorite(location)
                                 Toast.makeText(context,"Saved to favorite", Toast.LENGTH_SHORT).show()
                             }
                         },

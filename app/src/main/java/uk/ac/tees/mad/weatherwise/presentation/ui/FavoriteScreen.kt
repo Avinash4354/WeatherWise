@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,17 +14,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import uk.ac.tees.mad.weatherwise.R
 import uk.ac.tees.mad.weatherwise.presentation.components.FavoriteLocationCard
 import uk.ac.tees.mad.weatherwise.presentation.components.SwipeToDelete
 import uk.ac.tees.mad.weatherwise.presentation.navigation.Screens
 import uk.ac.tees.mad.weatherwise.presentation.viewmodel.FavoriteViewModel
+import uk.ac.tees.mad.weatherwise.utils.Constants
 
 @Composable
 fun FavoriteScreen(modifier: Modifier = Modifier,
@@ -54,7 +51,7 @@ fun FavoriteScreen(modifier: Modifier = Modifier,
                             countryCode = place.country,
                             weather = place.mainWeather,
                             temperature = place.temperature.toString(),
-                            ImageVector.vectorResource(R.drawable.baseline_cloudy_snowing_24),
+                            Constants.IMGURL+"${place.icon}@2x.png",
                             onClick = {
                                 navController.navigate(Screens.DetailedScreen.route+"/"+index)
                             }

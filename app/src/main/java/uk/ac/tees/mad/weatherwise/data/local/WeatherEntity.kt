@@ -20,6 +20,7 @@ data class WeatherEntity(
     val windSpeed: Double,
     val sunrise: Long,
     val sunset: Long,
+    val icon: String,
     val timeStamp: Long = System.currentTimeMillis(),
     val dataType: String,
     val city:String,

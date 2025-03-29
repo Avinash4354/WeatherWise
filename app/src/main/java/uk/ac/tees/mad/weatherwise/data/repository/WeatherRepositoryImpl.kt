@@ -23,6 +23,7 @@ class WeatherRepositoryImpl @Inject constructor(
             latitude = response.coord.lat,
             mainWeather = response.weather[0].main,
             description = response.weather[0].description,
+            icon = response.weather[0].icon,
             temperature = response.main.temp,
             feelsLike = response.main.feelsLike,
             tempMin = response.main.tempMin,

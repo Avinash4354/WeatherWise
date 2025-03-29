@@ -1,11 +1,14 @@
 package uk.ac.tees.mad.weatherwise.utils
 
+import uk.ac.tees.mad.weatherwise.R
 import uk.ac.tees.mad.weatherwise.model.Raindrop
+import uk.ac.tees.mad.weatherwise.model.Snowflake
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import kotlin.random.Random
+
 
 object Utils {
     fun generateRaindrops(count: Int): List<Raindrop> {
@@ -17,6 +20,17 @@ object Utils {
                 speed = Random.nextInt(500, 1500),
                 slant = Random.nextFloat() *2 -1f,
                 opacity = Random.nextFloat() *0.6f +0.4f
+            )
+        }
+    }
+
+    fun generateSnowflakes(count: Int): List<Snowflake> {
+        return List(count) {
+            Snowflake(
+                x = Random.nextFloat(),
+                size = Random.nextFloat() * 6f + 4f,
+                opacity = Random.nextFloat() * 0.5f + 0.5f,
+                drift = Random.nextFloat() * 0.002f - 0.001f
             )
         }
     }
@@ -42,6 +56,18 @@ object Utils {
         val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
         sdf.timeZone = TimeZone.getDefault()
         return sdf.format(date)
+    }
+
+    fun getBackground(weather:String):Int{
+        return when(weather){
+            "Clear" -> R.drawable.clear
+            "Clouds" -> R.drawable.cloud
+            "Rain" -> R.drawable.rain
+            "Drizzle" -> R.drawable.rain
+            "Thunderstorm" -> R.drawable.thunder_storm
+            "Snow" -> R.drawable.snow
+            else -> R.drawable.atmosphere
+        }
     }
 
 }

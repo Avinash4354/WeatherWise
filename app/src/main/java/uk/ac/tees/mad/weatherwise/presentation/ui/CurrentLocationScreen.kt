@@ -111,7 +111,7 @@ fun CurrentLocationScreen(
         ChangeLocationDialog(
             message,
             {
-                viewModel.saveToFavorite("current_location",selectedLocation!!)
+                viewModel.updateCurrentLocation(selectedLocation!!)
                 showDialog1 = false},
             {showDialog1=false}
         )

@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import uk.ac.tees.mad.weatherwise.R
 import uk.ac.tees.mad.weatherwise.presentation.components.HomeBackGround
 import uk.ac.tees.mad.weatherwise.presentation.components.HomeTopAppbar
 import uk.ac.tees.mad.weatherwise.presentation.components.IconText
@@ -30,26 +31,13 @@ import uk.ac.tees.mad.weatherwise.utils.Utils
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel,
     modifier: Modifier = Modifier) {
-    val userLocation by homeViewModel.userLocation.collectAsState()
     val currentWeatherEntity by homeViewModel.currentLocationData.collectAsState(null)
-
-//    val permissionLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.RequestPermission()
-//    ) { isGranted ->
-//        if (isGranted) {
-//            homeViewModel.fetchLocation()
-//        }
-//    }
-//
-//    LaunchedEffect(Unit) {
-//        permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//    }
 
     Box(
         modifier = modifier
             .fillMaxSize(),
         ) {
-        HomeBackGround()
+        HomeBackGround(currentWeatherEntity?.mainWeather?:"Clear")
         Column(modifier = Modifier.fillMaxSize()) {
             HomeTopAppbar(
                 city = currentWeatherEntity?.city,
@@ -87,8 +75,8 @@ fun HomeScreen(homeViewModel: HomeViewModel,
                     modifier = Modifier.padding(horizontal = 16.dp)
                         .fillMaxWidth()
                 ) {
-                    IconText(Utils.formatTimestampToTime(it.sunrise))
-                    IconText(Utils.formatTimestampToTime(it.sunset))
+                    IconText(Utils.formatTimestampToTime(it.sunrise), R.drawable.sunrise)
+                    IconText(Utils.formatTimestampToTime(it.sunset), R.drawable.sunset)
                 }
                 WeatherDetailBox(it)
                 Spacer(Modifier.height(60.dp))

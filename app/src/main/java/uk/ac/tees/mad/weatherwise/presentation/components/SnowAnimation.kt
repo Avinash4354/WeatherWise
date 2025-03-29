@@ -15,21 +15,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.onSizeChanged
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import uk.ac.tees.mad.weatherwise.utils.Utils.generateRaindrops
+import uk.ac.tees.mad.weatherwise.utils.Utils.generateSnowflakes
 import kotlin.random.Random
 
 @Composable
-fun RainAnimation() {
-    val rainDrops = remember { generateRaindrops(120) }
+fun SnowAnimation() {
+    val snowflakes = remember { generateSnowflakes(120) }
     val canvasHeight = remember { mutableFloatStateOf(0f) }
     val dropPositions = remember { mutableStateListOf(*Array(120) { 0f }) }
 
     LaunchedEffect(Unit) {
-        rainDrops.forEachIndexed { index, raindrop ->
+        snowflakes.forEachIndexed { index, snowflake ->
             launch {
                 while (true) {
                     dropPositions[index] = 0f
@@ -38,7 +37,10 @@ fun RainAnimation() {
                         targetValue = canvasHeight.floatValue,
                         animationSpec = infiniteRepeatable(
                             animation = tween(
-                                durationMillis = raindrop.speed,
+                                durationMillis = (Random.nextInt(
+                                    3000,
+                                    6000
+                                )), // Randomize snowflake fall duration
                                 easing = LinearEasing
                             ),
                             repeatMode = RepeatMode.Restart
@@ -46,7 +48,7 @@ fun RainAnimation() {
                     ) { value, _ ->
                         dropPositions[index] = value
                     }
-                    delay(Random.nextLong(50, 300))
+                    delay(Random.nextLong(50, 300)) // Delay between snowflakes falling
                 }
             }
         }
@@ -58,19 +60,16 @@ fun RainAnimation() {
     ) {
         val canvasWidth = size.width
 
-        for ((index, raindrop) in rainDrops.withIndex()) {
-            val xStart = raindrop.x * canvasWidth
-            val yStart = dropPositions[index] - raindrop.length
-            val yEnd = dropPositions[index]
+        for ((index, snowflake) in snowflakes.withIndex()) {
+            val xStart = snowflake.x * canvasWidth
+            val yStart = dropPositions[index] - snowflake.size
 
-            val xEnd = xStart + (raindrop.slant * 5)
+            val xEnd = xStart + (snowflake.drift * 5)
 
-            drawLine(
-                color = Color.White.copy(alpha = raindrop.opacity),
-                start = Offset(xStart, yStart),
-                end = Offset(xEnd, yEnd),
-                strokeWidth = raindrop.width,
-                cap = StrokeCap.Round
+            drawCircle(
+                color = Color.White.copy(alpha = snowflake.opacity),
+                radius = snowflake.size,
+                center = Offset(xEnd, yStart)
             )
         }
     }

@@ -7,21 +7,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import uk.ac.tees.mad.weatherwise.R
-import uk.ac.tees.mad.weatherwise.presentation.ui.HomeScreen
-import uk.ac.tees.mad.weatherwise.presentation.ui.theme.WeatherWiseTheme
+import uk.ac.tees.mad.weatherwise.utils.Utils
 
 @Composable
-fun HomeBackGround(modifier: Modifier = Modifier) {
+fun HomeBackGround(weather:String) {
     Box(modifier = Modifier.fillMaxSize()) {
 
         Image(
-            painter = painterResource(R.drawable.rainy),
+            painter = painterResource(Utils.getBackground(weather)),
             contentDescription = "cloudy",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
-        RainAnimation()
+        when(weather){
+            "Rain" -> RainAnimation()
+            "Drizzle" -> RainAnimation()
+            "Thunderstorm" -> RainAnimation()
+            "Snow" -> SnowAnimation()
+        }
     }
 }

@@ -13,5 +13,6 @@ data class WeatherData(
     val visibility: Int,
     val windSpeed: Double,
     val sunrise: Long,
-    val sunset: Long
+    val sunset: Long,
+    val icon: String
 )

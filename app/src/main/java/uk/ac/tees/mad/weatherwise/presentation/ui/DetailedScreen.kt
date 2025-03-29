@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import uk.ac.tees.mad.weatherwise.R
 import uk.ac.tees.mad.weatherwise.presentation.components.HomeBackGround
 import uk.ac.tees.mad.weatherwise.presentation.components.HomeTopAppbar
 import uk.ac.tees.mad.weatherwise.presentation.components.IconText
@@ -44,7 +45,7 @@ fun DetailedScreen(
             .fillMaxSize(),
 
         ) {
-        HomeBackGround()
+        HomeBackGround(currentWeatherEntity?.mainWeather?:"Clear")
         Column(modifier = Modifier.fillMaxSize()) {
             HomeTopAppbar(
                 city = currentWeatherEntity?.city,
@@ -82,8 +83,8 @@ fun DetailedScreen(
                     modifier = Modifier.padding(horizontal = 16.dp)
                         .fillMaxWidth()
                     ) {
-                    IconText(Utils.formatTimestampToTime(it.sunrise))
-                    IconText(Utils.formatTimestampToTime(it.sunset))
+                    IconText(Utils.formatTimestampToTime(it.sunrise), R.drawable.sunrise)
+                    IconText(Utils.formatTimestampToTime(it.sunset), R.drawable.sunset)
                 }
                 WeatherDetailBox(it)
                 Spacer(Modifier.height(40.dp))

@@ -13,10 +13,12 @@ import uk.ac.tees.mad.weatherwise.presentation.ui.DetailedScreen
 import uk.ac.tees.mad.weatherwise.presentation.ui.MainScreen
 import uk.ac.tees.mad.weatherwise.presentation.ui.SplashScreen
 import uk.ac.tees.mad.weatherwise.presentation.viewmodel.FavoriteViewModel
+import uk.ac.tees.mad.weatherwise.presentation.viewmodel.HomeViewModel
 
 @Composable
 fun MyAppNavigation() {
     val navController = rememberNavController()
+    val homeViewModel: HomeViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = Screens.SplashScreen.route) {
 
@@ -25,7 +27,7 @@ fun MyAppNavigation() {
         }
 
         composable(Screens.MainScreen.route) {
-            MainScreen(navController)
+            MainScreen(homeViewModel,navController)
         }
 
         composable(Screens.AuthenticationScreen.route){

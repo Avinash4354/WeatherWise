@@ -27,7 +27,7 @@ fun WeatherDetailBox(weatherData: WeatherEntity,modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
-                .background(Color(0x27FFFFFF), shape = RoundedCornerShape(12.dp))
+                .background(Color(0x430277BD), shape = RoundedCornerShape(12.dp))
                 .border(2.dp, Color.White, RoundedCornerShape(12.dp))
                 .padding(16.dp)
         ) {
@@ -36,19 +36,19 @@ fun WeatherDetailBox(weatherData: WeatherEntity,modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                DetailDoubleText(weatherData.feelsLike.toString(),"Feels Like")
+                DetailDoubleText(weatherData.feelsLike.toString()+" °C","Feels Like")
                 VerticalDivider(
                     thickness = 4.dp, color = Color(0xB7FFFFFF),
                     modifier = Modifier
                         .size(16.dp)
                 )
-                DetailDoubleText(weatherData.humidity.toString(),"Humidity")
+                DetailDoubleText(weatherData.humidity.toString()+"%","Humidity")
                 VerticalDivider(
                     thickness = 4.dp, color = Color(0xB7FFFFFF),
                     modifier = Modifier
                         .size(16.dp)
                 )
-                DetailDoubleText(weatherData.visibility.toString(),"Visibility")
+                DetailDoubleText(weatherData.visibility.toString()+" m","Visibility")
             }
             Spacer(Modifier.height(12.dp))
             Row(
@@ -56,19 +56,19 @@ fun WeatherDetailBox(weatherData: WeatherEntity,modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                DetailDoubleText(weatherData.windSpeed.toString(),"Wind Speed")
+                DetailDoubleText(weatherData.windSpeed.toString()+" m/s","Wind Speed")
                 VerticalDivider(
                     thickness = 4.dp, color = Color(0xB7FFFFFF),
                     modifier = Modifier
                         .size(16.dp)
                 )
-                DetailDoubleText(weatherData.minTemp.toString(),"Min Temp")
+                DetailDoubleText(weatherData.minTemp.toString()+" °C","Min Temp")
                 VerticalDivider(
                     thickness = 4.dp, color = Color(0xB7FFFFFF),
                     modifier = Modifier
                         .size(16.dp)
                 )
-                DetailDoubleText(weatherData.maxTemp.toString(),"Max Temp")
+                DetailDoubleText(weatherData.maxTemp.toString()+" °C","Max Temp")
             }
         }
     }

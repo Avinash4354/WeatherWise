@@ -18,9 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import uk.ac.tees.mad.weatherwise.R
 
 @Composable
 fun FavoriteLocationCard(
@@ -28,7 +34,7 @@ fun FavoriteLocationCard(
     countryCode: String,
     weather: String,
     temperature: String,
-    weatherIcon: ImageVector,
+    imgUrl:String,
     onClick:()->Unit
 ) {
 
@@ -70,11 +76,17 @@ fun FavoriteLocationCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(
-                    imageVector = weatherIcon,
-                    contentDescription = "Weather Icon",
-                    tint = Color.White,
-                    modifier = Modifier.size(36.dp)
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(imgUrl)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "Weather Image",
+                    modifier = Modifier
+                        .size(36.dp),
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(id = R.drawable.cloud1),
+                    error = painterResource(id = R.drawable.cloud2)
                 )
 
                 Text(

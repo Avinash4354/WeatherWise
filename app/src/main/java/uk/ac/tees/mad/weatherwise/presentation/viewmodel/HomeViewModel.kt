@@ -1,13 +1,8 @@
 package uk.ac.tees.mad.weatherwise.presentation.viewmodel
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
-import android.location.Location
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -27,13 +22,10 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val repository: WeatherRepository,
     private val getWeatherUseCase: GetWeatherUseCase,
-    private val fusedLocationClient: FusedLocationProviderClient,
     private val auth: FirebaseAuth,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    private val _userLocation = MutableStateFlow<Location?>(null)
-    val userLocation: StateFlow<Location?> get() = _userLocation
 
     private val _currentLocationData = MutableStateFlow<WeatherEntity?>(null)
     val currentLocationData: Flow<WeatherEntity?> get() = _currentLocationData
@@ -62,6 +54,7 @@ class HomeViewModel @Inject constructor(
                                 windSpeed = _weatherState.value!!.windSpeed,
                                 sunrise = _weatherState.value!!.sunrise,
                                 sunset = _weatherState.value!!.sunset,
+                                icon = _weatherState.value!!.icon,
                                 dataType = "current_location",
                                 city = "New York".uppercase(Locale.ROOT),
                                 country = "United States"
@@ -100,6 +93,7 @@ class HomeViewModel @Inject constructor(
                         windSpeed = _weatherState.value!!.windSpeed,
                         sunrise = _weatherState.value!!.sunrise,
                         sunset = _weatherState.value!!.sunset,
+                        icon = _weatherState.value!!.icon,
                         timeStamp = System.currentTimeMillis(),
                         dataType = "current_location",
                         city = _currentLocationData.value!!.city,
@@ -108,23 +102,5 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-
-    fun fetchLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                context, Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                _userLocation.value = location
-            }
-            .addOnFailureListener {
-                _userLocation.value = null
-            }
     }
 }

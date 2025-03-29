@@ -68,7 +68,38 @@ class SearchScreenViewModel @Inject constructor(
         }
     }
 
-    fun saveToFavorite(type:String,location:GeocodeResult){
+    fun saveToFavorite(location:GeocodeResult){
+        viewModelScope.launch {
+            val weatherResponse = repository.getWeather(
+                location.lat,
+                location.lon,
+                Constants.WEATHER_API
+            )
+
+            repository.addWeatherData(WeatherEntity(
+                latitude = weatherResponse.latitude,
+                longitude = weatherResponse.longitude,
+                mainWeather = weatherResponse.mainWeather,
+                description = weatherResponse.description,
+                temperature = weatherResponse.temperature,
+                feelsLike = weatherResponse.feelsLike,
+                minTemp = weatherResponse.tempMin,
+                maxTemp = weatherResponse.tempMax,
+                humidity = weatherResponse.humidity,
+                visibility = weatherResponse.visibility,
+                windSpeed = weatherResponse.windSpeed,
+                sunrise = weatherResponse.sunrise,
+                sunset = weatherResponse.sunset,
+                icon = weatherResponse.icon,
+                dataType = "favorite_location",
+                city = location.name.uppercase(),
+                country = location.country,
+                userId = currentUser,
+            ))
+        }
+    }
+
+    fun updateCurrentLocation(location:GeocodeResult){
         viewModelScope.launch {
             val weatherResponse = repository.getWeather(
                 location.lat,
@@ -90,7 +121,8 @@ class SearchScreenViewModel @Inject constructor(
                 windSpeed = weatherResponse.windSpeed,
                 sunrise = weatherResponse.sunrise,
                 sunset = weatherResponse.sunset,
-                dataType = type,
+                icon = weatherResponse.icon,
+                dataType = "current_location",
                 city = location.name.uppercase(),
                 country = location.country
             ))
@@ -121,6 +153,7 @@ class SearchScreenViewModel @Inject constructor(
                     windSpeed = weatherResponse.windSpeed,
                     sunrise = weatherResponse.sunrise,
                     sunset = weatherResponse.sunset,
+                    icon = weatherResponse.icon,
                     dataType = "current_location",
                     city = city.uppercase(),
                     country = country

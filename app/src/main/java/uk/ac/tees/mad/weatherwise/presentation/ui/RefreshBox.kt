@@ -26,7 +26,7 @@ fun RefreshBox(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(16.dp)
-            .background(Color(0x27FFFFFF), shape = RoundedCornerShape(12.dp))
+            .background(Color(0x430277BD), shape = RoundedCornerShape(12.dp))
             .border(2.dp, Color.White, RoundedCornerShape(12.dp))
     ) {
         Text("Last updated: ${time?.let { Utils.getTimeAgo(it) }}",

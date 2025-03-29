@@ -8,15 +8,15 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import uk.ac.tees.mad.weatherwise.presentation.components.MainBottomBar
 import uk.ac.tees.mad.weatherwise.presentation.viewmodel.HomeViewModel
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(
+    homeViewModel: HomeViewModel,
+    navController: NavController) {
     var selectedScreen by rememberSaveable { mutableIntStateOf(0) }
-    val homeViewModel:HomeViewModel = hiltViewModel()
     Scaffold(
         bottomBar = { MainBottomBar(
             selectedScreen,
