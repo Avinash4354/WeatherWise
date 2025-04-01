@@ -1,5 +1,7 @@
 package uk.ac.tees.mad.weatherwise.presentation.viewmodel
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -26,9 +28,9 @@ class AuthenticationViewModel @Inject constructor(
     private val _loginSuccess = MutableStateFlow(false)
     val loginSuccess:StateFlow<Boolean> get() = _loginSuccess
 
-    private fun login() {
+    private fun login(context: Context) {
         if (_email.value.isEmpty() || _password.value.isEmpty()) {
-            // add toast
+            Toast.makeText(context, "Enter full details", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -37,17 +39,17 @@ class AuthenticationViewModel @Inject constructor(
             .addOnCompleteListener { task ->
                 _isLoading.value = false
                 if (task.isSuccessful) {
-                    // toast add
+                    Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
                     _loginSuccess.value = true
                 } else {
-                    // add toast
+                    Toast.makeText(context, "Login Failed, please check details", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    private fun signUp() {
+    private fun signUp(context: Context) {
         if (_email.value.isEmpty() || _password.value.isEmpty() || _name.value.isEmpty()) {
-            // add Toast
+            Toast.makeText(context, "Enter full details", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -61,23 +63,23 @@ class AuthenticationViewModel @Inject constructor(
                         .build()
                     auth.currentUser?.updateProfile(profileUpdate)?.addOnSuccessListener{
                         _loginSuccess.value = true
-                        // add toast
+                        Toast.makeText(context, "New user created", Toast.LENGTH_SHORT).show()
                     }
                         ?.addOnFailureListener{
-                            // add toast
+                            Toast.makeText(context, "Authentication failed, please check details", Toast.LENGTH_SHORT).show()
                         }
 
                 } else {
-                    // add toast
+                    Toast.makeText(context, "Authentication failed, please check network", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    fun authenticate() {
+    fun authenticate(context: Context) {
         if (_isSignUp.value) {
-            signUp()
+            signUp(context)
         } else {
-            login()
+            login(context)
         }
     }
 
@@ -95,10 +97,6 @@ class AuthenticationViewModel @Inject constructor(
 
     fun onPasswordChange(newPassword: String) {
         _password.value = newPassword
-    }
-
-    fun onIsLoadingChange(value:Boolean){
-        _isLoading.value = value
     }
 
 }

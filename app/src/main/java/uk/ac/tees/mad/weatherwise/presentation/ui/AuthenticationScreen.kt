@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -41,6 +42,8 @@ fun AuthenticationScreen(navController: NavController, viewModel: Authentication
     val name by viewModel.name.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val loginSuccess by viewModel.loginSuccess.collectAsState()
+
+    val context = LocalContext.current
 
     val cardHeight = if (isSignUp) 410.dp else 350.dp
 
@@ -115,7 +118,7 @@ fun AuthenticationScreen(navController: NavController, viewModel: Authentication
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { viewModel.authenticate() },
+                    onClick = { viewModel.authenticate(context) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = if (isSignUp) "Sign Up" else "Login")

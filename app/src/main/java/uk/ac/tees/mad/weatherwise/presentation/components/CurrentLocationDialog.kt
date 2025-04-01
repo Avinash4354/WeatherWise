@@ -25,7 +25,7 @@ fun CurrentLocationDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Reset Password") },
+        title = { Text("Change your location") },
         text = {
             Column {
                 OutlinedTextField(

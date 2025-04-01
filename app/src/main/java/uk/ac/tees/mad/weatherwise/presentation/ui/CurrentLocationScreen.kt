@@ -47,7 +47,6 @@ fun CurrentLocationScreen(
     val context = LocalContext.current
     var showDialog1 by remember { mutableStateOf(false) }
     var showDialog2 by remember { mutableStateOf(false) }
-    var message by remember { mutableStateOf("") }
     var selectedLocation by remember { mutableStateOf<GeocodeResult?>(null) }
 
     val isPermission by viewModel.isPermission.collectAsState()
@@ -80,7 +79,6 @@ fun CurrentLocationScreen(
                 "Current Location"
             ) {
                 if (isPermission) {
-                    message = "Change location to your current location"
                     showDialog2 = true
                 }else{
                     Toast.makeText(context, "No permission for location", Toast.LENGTH_SHORT).show()
@@ -100,7 +98,6 @@ fun CurrentLocationScreen(
                         onFavoriteClick = {},
                         onClick = {
                             selectedLocation = location
-                            message = "Change your location to ${location.name}"
                             showDialog1 = true}
                     )
                 }
@@ -109,9 +106,10 @@ fun CurrentLocationScreen(
     }
     if (showDialog1 && selectedLocation!=null){
         ChangeLocationDialog(
-            message,
+            "Change your location",
             {
                 viewModel.updateCurrentLocation(selectedLocation!!)
+                Toast.makeText(context,"Current location updated", Toast.LENGTH_SHORT).show()
                 showDialog1 = false},
             {showDialog1=false}
         )
@@ -120,6 +118,7 @@ fun CurrentLocationScreen(
         CurrentLocationDialog(
             onSave = {city,country->
                 viewModel.updateCurrentLocation(city,country)
+                Toast.makeText(context,"Current location updated", Toast.LENGTH_SHORT).show()
                 showDialog2 = false
             },
             onDismiss = {showDialog2 = false}
