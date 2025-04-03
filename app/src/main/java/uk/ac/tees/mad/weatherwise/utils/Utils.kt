@@ -1,5 +1,7 @@
 package uk.ac.tees.mad.weatherwise.utils
 
+import android.content.Context
+import android.net.Uri
 import uk.ac.tees.mad.weatherwise.R
 import uk.ac.tees.mad.weatherwise.model.Raindrop
 import uk.ac.tees.mad.weatherwise.model.Snowflake
@@ -67,6 +69,15 @@ object Utils {
             "Thunderstorm" -> R.drawable.thunder_storm
             "Snow" -> R.drawable.snow
             else -> R.drawable.atmosphere
+        }
+    }
+
+    fun getRealPathFromURI(context: Context, uri: Uri): String? {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        return cursor?.use {
+            it.moveToFirst()
+            val index = it.getColumnIndex("_data")
+            if (index != -1) it.getString(index) else null
         }
     }
 

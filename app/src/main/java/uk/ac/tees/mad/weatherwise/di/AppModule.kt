@@ -1,6 +1,7 @@
 ﻿package uk.ac.tees.mad.weatherwise.di
 
 import android.content.Context
+import com.cloudinary.Cloudinary
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
@@ -84,6 +85,18 @@ object AppModule {
         @ApplicationContext context: Context
     ): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCloudinary():Cloudinary{
+        val config = HashMap<String,String>().apply {
+            put("cloud_name", "ducf4jogf")
+            put("api_key", "624469855219998")
+            put("api_secret", "vHRLgES5smMswESNm147O_EkTa4")
+        }
+
+        return Cloudinary(config)
     }
 
 

@@ -59,6 +59,8 @@ dependencies {
     implementation(libs.play.services.location)
     kapt(libs.hilt.android.compiler)
 
+    implementation("androidx.activity:activity-ktx:1.10.0")
+
     // navigation
     implementation(libs.androidx.navigation.compose)
 
@@ -77,6 +79,9 @@ dependencies {
 
     // coil for image loading
     implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // cloudinary
+    implementation("com.cloudinary:cloudinary-android:3.0.2")
 
 
     testImplementation(libs.junit)

@@ -1,6 +1,6 @@
 package uk.ac.tees.mad.weatherwise.presentation.components
 
-import androidx.compose.foundation.Image
+import android.net.Uri
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,39 +20,46 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import uk.ac.tees.mad.weatherwise.R
-import uk.ac.tees.mad.weatherwise.presentation.ui.theme.WeatherWiseTheme
 
 @Composable
-fun ProfileSection(userName: String, onEditClick: () -> Unit) {
+fun ProfileSection(
+    userName: String,
+    uri:Uri?,
+    onEditClick: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
             .border(1.dp, color = Color.Gray, shape = RoundedCornerShape(8.dp))
-            .padding(vertical = 16.dp, horizontal = 12.dp)
-        ,
+            .padding(vertical = 16.dp, horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-            Image(
-                painter = painterResource(id = R.drawable.placeholder_profile),
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape)
-                    .border(1.dp, color = Color.Gray, shape = CircleShape)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = userName,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
+        AsyncImage(
+            model = uri,
+            contentDescription = "Weather Image",
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .border(1.dp, color = Color.Gray, shape = CircleShape),
+            contentScale = ContentScale.Crop,
+            placeholder = painterResource(id = R.drawable.placeholder_profile),
+            error = painterResource(id = R.drawable.placeholder_profile)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = userName,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .weight(1f)
+        )
 
         IconButton(onClick = onEditClick) {
             Icon(
@@ -60,13 +67,5 @@ fun ProfileSection(userName: String, onEditClick: () -> Unit) {
                 contentDescription = "Edit Name",
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ProfilePrev() {
-    WeatherWiseTheme {
-        ProfileSection("Test Name") { }
     }
 }

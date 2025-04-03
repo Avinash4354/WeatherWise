@@ -1,5 +1,8 @@
 package uk.ac.tees.mad.weatherwise.presentation.ui
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -12,9 +15,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import uk.ac.tees.mad.weatherwise.R
 import uk.ac.tees.mad.weatherwise.presentation.components.EditProfileBottomSheet
 import uk.ac.tees.mad.weatherwise.presentation.components.ProfileSection
 import uk.ac.tees.mad.weatherwise.presentation.components.SettingButton
@@ -27,8 +30,22 @@ fun ProfileScreen(navController: NavController,
                   modifier: Modifier = Modifier) {
     val name by viewModel.name.collectAsState()
     var showEditProfile by remember { mutableStateOf(false) }
+    val imageUri by viewModel.imageUri.collectAsState()
+
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            viewModel.changeImageUri(uri)
+            viewModel.onPicSelected(true)
+        }
+    }
+
     Column(modifier = modifier.fillMaxSize()) {
-        ProfileSection(name) {showEditProfile = true }
+        ProfileSection(
+            name,
+            imageUri,
+            onEditClick = {showEditProfile = true},
+        )
         SettingButton(
             title = "Current Location",
             icon = Icons.Default.LocationOn
@@ -50,13 +67,15 @@ fun ProfileScreen(navController: NavController,
     if (showEditProfile){
         EditProfileBottomSheet(
             name,
-            R.drawable.placeholder_profile,
-            onSave = {
-                viewModel.updateProfile(it)
-                showEditProfile = false
+            imageUri,
+            onSave = {viewModel.updateProfile(it, context)
+                     showEditProfile = false
+                     viewModel.onPicSelected(false)
+                     },
+            onImageClick = {launcher.launch("image/*")},
+            onDismiss = {showEditProfile = false
+            viewModel.onPicSelected(false)
             }
-        ) {
-            showEditProfile = false
-        }
+        )
     }
 }
